@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/** @Route("/blog", name="blog_") */
 
 class BlogController extends AbstractController
 {
@@ -41,7 +42,7 @@ class BlogController extends AbstractController
      *
      * @Route("/{slug<^[a-z0-9-]+$>}",
      *     defaults={"slug" = null},
-     *     name="blog_show")
+     *     name="show")
      * @return Response A response instance
      */
 
@@ -77,27 +78,64 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/blog/category/{category}", name="show_category")
+     * @Route("/category/{category}", name="show_category")
      ** @return Response A response instance
      **/
 
     public function showByCategory ( string $category )
     {
-
-        $categoryName = $this->getDoctrine()
+        $objetCategory =  $this->getDoctrine()
             ->getRepository(Category::class)
             ->findOneBy(['name' => $category]);
 
-        $articles = $this->getDoctrine()
-            ->getRepository((Article::class))
-            ->findBy(['category' => $categoryName]);
+        $articles = $objetCategory->getArticles();
+
         return $this->render(
-            'Blog/category.html.twig',
+            'Blog/index.html.twig',
             [
-                'category' => $categoryName,
                 'articles' => $articles,
             ]
         );
 
+
     }
+/*
+    public function showByCategory ( string $category )
+    {
+        $objetCategory =  $this->getDoctrine()
+            ->getRepository(Category::class)
+            ->findOneBy(['name' => $category]);
+
+        $articles = $objetCategory->getArticles();
+
+        foreach ($articles as $art){
+            echo $art->getContent();
+        }
+        exit;
+
+    }
+*/
+
+
+
+    /*
+            $categoryName = $this->getDoctrine()
+                ->getRepository(Category::class)
+                ->findOneBy(['name' => $category]);
+
+            $articles = $this->getDoctrine()
+                ->getRepository((Article::class))
+                ->findBy(['category' => $categoryName],['id'=> 'desc'], 3);
+            return $this->render(
+                'Blog/category.html.twig',
+                [
+                    'category' => $categoryName,
+                    'articles' => $articles,
+                ]
+            );*/
+
+    /*$categoryName = $this->getDoctrine()
+        ->getRepository(Category::class)
+        ->findOneBy(['name' => $category]);
+    $*/
 }
