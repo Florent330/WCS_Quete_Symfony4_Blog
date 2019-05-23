@@ -6,7 +6,10 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Form\ArticleSearchType;
+use http\Env\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -99,22 +102,25 @@ class BlogController extends AbstractController
 
 
     }
-/*
-    public function showByCategory ( string $category )
-    {
-        $objetCategory =  $this->getDoctrine()
-            ->getRepository(Category::class)
-            ->findOneBy(['name' => $category]);
 
-        $articles = $objetCategory->getArticles();
 
-        foreach ($articles as $art){
-            echo $art->getContent();
+
+    /*
+        public function showByCategory ( string $category )
+        {
+            $objetCategory =  $this->getDoctrine()
+                ->getRepository(Category::class)
+                ->findOneBy(['name' => $category]);
+
+            $articles = $objetCategory->getArticles();
+
+            foreach ($articles as $art){
+                echo $art->getContent();
+            }
+            exit;
+
         }
-        exit;
-
-    }
-*/
+    */
 
 
 
