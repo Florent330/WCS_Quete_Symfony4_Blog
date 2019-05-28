@@ -1,4 +1,6 @@
 {% extends 'base.html.twig' %}
+{% block title %}index{% endblock %}
+
 {% block body %}
     <a href="{{ path('blog_show', { 'slug': "javascript-vs-php" }) }}">
         Testing show() method from BlogController with a real article s slug.
