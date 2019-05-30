@@ -20,8 +20,7 @@
     <strong>Articles :</strong>
     <ul>
         {% for tags in tag.articles %}
-                <li>{{ tags.title }} </li>
-        {% else %}
+            <a href="{{ path('article_show', {'id': tags.id}) }}"><li>{{ tags.title }} </li></a>        {% else %}
             <li>No tags for this article</li>
         {% endfor %}
     </ul>
