@@ -31,7 +31,7 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
     public function load ( ObjectManager $manager )
     {   $slugify = new Slugify();
         for ($i = 0; $i < 50; $i++) {
-
+            $slugify = new Slugify();
             $faker = Faker\Factory::create('fr_FR');
             $article = new Article();
             $article->setTitle(mb_strtolower($faker->word));
