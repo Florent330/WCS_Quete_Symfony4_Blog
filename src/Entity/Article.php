@@ -45,7 +45,7 @@ class Article
     private $slug;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="articles")
      */
     private $author;
 
