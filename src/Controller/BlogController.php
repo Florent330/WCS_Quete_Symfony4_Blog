@@ -6,12 +6,14 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Entity\Tag;
 use App\Form\ArticleSearchType;
 use http\Env\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\SecurityBundle\Tests\Functional\app;
 
 /** @Route("/blog", name="blog_") */
 
@@ -27,7 +29,7 @@ class BlogController extends AbstractController
     public function index (): Response
     {
         $articles = $this->getDoctrine()->getRepository(Article::class)
-            ->findAll();
+            ->findAllWithCategoriesAndTagsAndAuthors();
         if (!$articles) {
             throw $this->createNotFoundException(
                 'No article found in article\'s table.'
