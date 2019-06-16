@@ -48,7 +48,7 @@ class AppFixtures extends Fixture
             $manager->persist($tag);
 
             $author = new User();
-            $author->setEmail("author" . $i . "monsite.com");
+            $author->setEmail("author" . $i . "@monsite.com");
             $author->setPassword("author" . $i);
             $manager->persist($author);
 

@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @Route("/article")
@@ -93,6 +94,8 @@ class ArticleController extends AbstractController
      */
     public function edit ( Request $request, Article $article, Slugify $slugify ): Response
     {
+        if ($this->getUser() === $article->getAuthor() or $this->isGranted('ROLE_ADMIN'))
+        {
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
@@ -105,13 +108,13 @@ class ArticleController extends AbstractController
                 'id' => $article->getId(),
             ]);
         }
+        } else throw $this->createAccessDeniedException();
 
         return $this->render('article/edit.html.twig', [
             'article' => $article,
             'form' => $form->createView(),
         ]);
     }
-
     /**
      * @Route("/{id}", name="article_delete", methods={"DELETE"})
      * @param Request $request
