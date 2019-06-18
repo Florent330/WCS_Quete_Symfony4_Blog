@@ -11,12 +11,22 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
 
 /**
  * @Route("/article")
  */
 class ArticleController extends AbstractController
 {
+    private $session;
+
+
+    public function __construct (SessionInterface $session)
+    {
+        $this->session = $session;
+    }
+
     /**
      * @Route("/", name="article_index", methods={"GET"})
      * @param ArticleRepository $articleRepository
@@ -50,6 +60,7 @@ class ArticleController extends AbstractController
             $article->setAuthor($author);
             $entityManager->persist($article);
             $entityManager->flush();
+            $this->addFlash('success', 'L\'article a bien été créé');
             $message = (new \Swift_Message('Un nouvel article vient d\'être publié ! '))
                 ->setFrom($this->getParameter('mailer_from'))
                 ->setTo($this->getParameter('mailer_from'))
@@ -96,18 +107,19 @@ class ArticleController extends AbstractController
     {
         if ($this->getUser() === $article->getAuthor() or $this->isGranted('ROLE_ADMIN'))
         {
-        $form = $this->createForm(ArticleType::class, $article);
-        $form->handleRequest($request);
+            $form = $this->createForm(ArticleType::class, $article);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $article->setSlug($slugify->generate($article->getTitle()));
-            $article = $article->setTitle($article->getSlug());
-            $this->getDoctrine()->getManager()->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $article->setSlug($slugify->generate($article->getTitle()));
+                $article = $article->setTitle($article->getSlug());
+                $this->getDoctrine()->getManager()->flush();
+                $this->addFlash('success', 'L\'article a bien été modifié');
 
-            return $this->redirectToRoute('article_index', [
-                'id' => $article->getId(),
-            ]);
-        }
+                return $this->redirectToRoute('article_index', [
+                    'id' => $article->getId(),
+                ]);
+            }
         } else throw $this->createAccessDeniedException();
 
         return $this->render('article/edit.html.twig', [
@@ -127,6 +139,8 @@ class ArticleController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($article);
             $entityManager->flush();
+            $this->addFlash('danger', 'L\'article a bien été effacé');
+
         }
 
         return $this->redirectToRoute('article_index');
