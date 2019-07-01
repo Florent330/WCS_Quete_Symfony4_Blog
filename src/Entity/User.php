@@ -41,11 +41,6 @@ class User implements UserInterface
     private $articles;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Article", inversedBy="users")
-     */
-    private $Articles;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Article")
      */
     private $favorite;

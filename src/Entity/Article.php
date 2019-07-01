@@ -64,12 +64,6 @@ class Article
      */
     private $author;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="articles")
-     */
-    private $users;
-
-
     public function __construct()
     {
         $this->tags = new ArrayCollection();
