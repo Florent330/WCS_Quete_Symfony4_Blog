@@ -68,7 +68,7 @@ class Article
     {
         $this->tags = new ArrayCollection();
         $this->users = new ArrayCollection();
-        $this->favorite = new ArrayCollection();
+        $this->favorites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -195,15 +195,15 @@ class Article
     /**
      * @return Collection|User[]
      */
-    public function getFavorite(): Collection
+    public function getFavorites(): Collection
     {
-        return $this->favorite;
+        return $this->favorites;
     }
 
     public function addFavorite(User $favorite): self
     {
-        if (!$this->favorite->contains($favorite)) {
-            $this->favorite[] = $favorite;
+        if (!$this->favorites->contains($favorite)) {
+            $this->favorites[] = $favorite;
             $favorite->addFavorite($this);
         }
 
@@ -212,8 +212,8 @@ class Article
 
     public function removeFavorite(User $favorite): self
     {
-        if ($this->favorite->contains($favorite)) {
-            $this->favorite->removeElement($favorite);
+        if ($this->favorites->contains($favorite)) {
+            $this->favorites->removeElement($favorite);
             $favorite->removeFavorite($this);
         }
 
