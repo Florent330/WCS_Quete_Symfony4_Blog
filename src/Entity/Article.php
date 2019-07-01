@@ -65,7 +65,7 @@ class Article
     private $author;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="Articles")
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="articles")
      */
     private $users;
 
