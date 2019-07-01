@@ -49,7 +49,6 @@ class User implements UserInterface
     public function __construct()
     {
         $this->articles = new ArrayCollection();
-        $this->Articles = new ArrayCollection();
         $this->favorite = new ArrayCollection();
     }
 
