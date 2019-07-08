@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Form\ArticleSearchType;
 use App\Form\CategoryType;
+use App\Repository\CategoryRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,36 +16,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 
 /**
- * @Route("/category", name="category_")
+ * @Route({
+ *     "en" : "/category",
+ *     "fr" : "/categorie",
+ *     "es" : "/categoria"},
+ *     name = "category_")
  */
 class CategoryController extends AbstractController
 {
-    /**
-     * @Route("/add", name="add")
-     * @param Request $request
-     * @IsGranted("ROLE_ADMIN")
-     * @return Response
-     */
-    public function addCategory (Request $request): Response
-    {
-        $category = new Category();
-
-        $form = $this->createForm(CategoryType::class, $category);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $form->getData();
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($category);
-            $entityManager->flush();
-            //return $this->RedirectToRoute('/Blog/show_category.html.twig');
-            return $this->render('/Blog/show_category.html.twig' , ['form' => $form->createView()]);
-
-        }
-            return $this->render('/Blog/add_category.html.twig' , ['form' => $form->createView()]);
-        }
-
-
     /**
      * @Route("/", name="index")
      * @param Request $request
@@ -68,4 +47,51 @@ class CategoryController extends AbstractController
         }
         return $this->render('Blog/form.html.twig', ['form' => $form->createView()]);
     }
+
+    /**
+     * @Route({
+     *     "en" : "/show",
+     *     "fr" : "/voir",
+     *     "es" : "/mostrar"},
+     *      name="show")
+     * @param CategoryRepository $categoryRepository
+     * @return Response
+     */
+    public function show ( CategoryRepository $categoryRepository ): Response
+    {
+        return $this->render('Blog/show_category.html.twig', [
+            'category' => $categoryRepository->findAll(),
+        ]);
+    }
+
+
+    /**
+     * @Route({
+     *     "en" : "/add",
+     *     "fr" : "/ajout",
+     *     "es" : "/crear"},
+     * name="add", methods={"GET","POST"})
+     * @param Request $request
+     * @IsGranted("ROLE_ADMIN")
+     * @return Response
+     */
+    public function addCategory (Request $request): Response
+    {
+        $category = new Category();
+        $form = $this->createForm(CategoryType::class, $category);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($category);
+            $entityManager->flush();
+            return $this->redirectToRoute('category_show');
+        }
+
+        return $this->render('/Blog/add_category.html.twig', ['form' => $form->createView(),'category'=>$category]);
+
+        }
+
+
 }

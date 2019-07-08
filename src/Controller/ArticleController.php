@@ -164,7 +164,7 @@ class ArticleController extends AbstractController
      */
     public function favorite ( Request $request, Article $article, ObjectManager $manager) : Response
     {
-        if ($this->getUser()->getFavorite()->contains($article))
+        if ($this->getUser()->getFavorites()->contains($article))
         {
             $this->getUser()->removeFavorite($article);
         }else{

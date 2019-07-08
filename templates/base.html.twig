@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
-    {% block stylesheets %}        {{ encore_entry_link_tags('app') }}{% endblock %}
+    {% block stylesheets %}{{ encore_entry_link_tags('app') }}{% endblock %}
 </head>
 
 <header>{% include 'Inc/navbar.html.twig' %}</header>
@@ -16,18 +16,16 @@
         {% endfor %}
     {% endfor %}
     {% block body %}{% endblock %}
-
     {% block footer %}
         <footer class="app-footer">
             <div class="container">
                 <div>
                     <div class="container-fluid text-center">
-                        Copyright &copy; {{ "now"|date("Y") }}
+                        {% trans %}copyright{% endtrans %} &copy; {{ "now"|date("Y") }}
                     </div>
                 </div>
             </div>
         </footer>
-
 </div>
     {% endblock %}
 

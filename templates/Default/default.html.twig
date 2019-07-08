@@ -3,9 +3,9 @@
 
 {% block body %}
     <a href="{{ path('blog_show', { 'slug': "qui" }) }}">
-        Testing show() method from BlogController with a real article s slug.
+        {% trans %}article{% endtrans %}
     </a>
     <br>
 <a href="{{ path('blog_index') }}">
-        Testing index() method from BlogCont to view all articles.
+        {% trans %}all_articles{% endtrans %}
     </a>{% endblock %}

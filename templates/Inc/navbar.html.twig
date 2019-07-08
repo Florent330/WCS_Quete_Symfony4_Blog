@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">Navbar</a>
+    <a class="navbar-brand" href="/"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -7,34 +7,40 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="{{ path('app_index') }}">
+                    {% trans %}
+                    home
+                    {% endtrans %}
+                    <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/article">Article index</a>
+                <a class="nav-link" href="{{ path('blog_show', { 'slug': "qui" }) }}">{% trans %}article{% endtrans %}</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown
+                    {% trans %}language{% endtrans %}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="/en">English</a>
+                    <a class="dropdown-item" href="/fr">French</a>
+                    <a class="dropdown-item" href="/es">Spanish</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a>
                 </div>
             </li>
             <li class="nav-item">
                 {% if app.user %}
-                    Bonjour {{ app.user.email }} !
-                    <a href="{{ path('app_logout') }}"> Se déconnecter</a>
+                    {% trans with {'%username%' :  app.user.email} %}
+                    hello_username
+                    {% endtrans %}
+                    <a href="{{ path('app_logout') }}">{{ 'account.logout'|trans }}</a>
                 {% else %}
-                    <a href="{{ path('app_login') }}"> Se connecter</a>
+                    <a href="{{ path('app_login') }}">{{ 'account.login'|trans }}</a>
                 {% endif %}
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <input class="form-control mr-sm-2" type="search"  aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">{% trans %}search{% endtrans %}</button>
         </form>
     </div>
 </nav>

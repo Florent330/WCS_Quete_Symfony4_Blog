@@ -8,15 +8,24 @@ use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\Tag;
 use App\Form\ArticleSearchType;
-use http\Env\Request;
+use App\Form\CategoryType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\SecurityBundle\Tests\Functional\app;
 
-/** @Route("/blog", name="blog_") */
 
+/**
+ * @Route({
+ *     "en" : "/blog",
+ *     "fr" : "/blog",
+ *     "es" : "/blog"},
+ *     name = "blog_")
+ */
 class BlogController extends AbstractController
 {
     /**
@@ -83,8 +92,10 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/category/{name}", name="show_category")
-     **
+     * @Route({"en" : "/category/{name}",
+     *          "fr" : "/categorie/{name}",
+     *          "es" : "/categoria/{name}"}  ,
+     *           name="show_category")
      * @param Category $category
      * @return Response A response instance
      */
@@ -97,15 +108,14 @@ class BlogController extends AbstractController
 
         $articles = $category->getArticles();
 
-        return $this->render(
-            'Blog/index.html.twig',
-            [
+        return $this->render('Blog/index.html.twig', [
                 'articles' => $articles,
             ]
         );
 
-
     }
+
+
 
 
 
